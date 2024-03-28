@@ -33,10 +33,17 @@ protoc-$PROTOBUF_VERSION-linux-aarch_64.zip -o protoc.zip && \
   unzip -qq protoc.zip && \
   cp ./bin/protoc /usr/local/bin/protoc
 
+# RUN wget -nv -O buildifier \
+#  https://github.com/bazelbuild/buildtools/releases/download/$BUILDIFIER_VERSION/buildifier && \
+#  chmod +x ./buildifier && \
+#  cp ./buildifier /usr/local/bin/buildifier
+
 RUN wget -nv -O buildifier \
-  https://github.com/bazelbuild/buildtools/releases/download/$BUILDIFIER_VERSION/buildifier && \
+  https://github.com/bazelbuild/buildtools/releases/download/4.0.1/buildifier-linux-arm64 && \
   chmod +x ./buildifier && \
   cp ./buildifier /usr/local/bin/buildifier
+
+
 
 # Download third_party modules to be used for the next stage
 WORKDIR /github/grpc-web
@@ -105,10 +112,7 @@ COPY ./scripts ./scripts
 COPY ./src ./src
 COPY ./test ./test
 
-RUN wget -nv -O buildifier \
-  https://github.com/bazelbuild/buildtools/releases/download/4.0.1/buildifier-linux-arm64 && \
-  chmod +x ./buildifier && \
-  cp ./buildifier /usr/local/bin/buildifier
+
 
 
 RUN /usr/local/bin/buildifier \
