@@ -18,5 +18,5 @@ WORKDIR /github/grpc-web/net/grpc/gateway/examples/echo/node-server
 
 RUN npm install
 
-EXPOSE 9090
+EXPOSE 9000
 CMD ["node", "server.js"]

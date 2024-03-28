@@ -107,7 +107,7 @@ function getServer() {
 if (require.main === module) {
   var echoServer = getServer();
   echoServer.bindAsync(
-    '0.0.0.0:9090', grpc.ServerCredentials.createInsecure(), (err, port) => {
+    '0.0.0.0:9000', grpc.ServerCredentials.createInsecure(), (err, port) => {
       assert.ifError(err);
       echoServer.start();
   });

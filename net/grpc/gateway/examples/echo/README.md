@@ -23,18 +23,18 @@ $ docker build -t grpcweb/prereqs \
 ## Run the gRPC Backend server
 
 This compiles the gRPC backend server, written in Node, and listens on port
-9090.
+9000.
 
 ```sh
 $ docker build -t grpcweb/node-server \
   -f net/grpc/gateway/docker/node_server/Dockerfile .
-$ docker run -d -p 9090:9090 --name node-server grpcweb/node-server
+$ docker run -d -p 9000:9000 --name node-server grpcweb/node-server
 ```
 
 ## Run the Envoy proxy
 
 This step runs the Envoy proxy, and listens on port 8080. Any gRPC-Web browser
-requests will be forwarded to port 9090.
+requests will be forwarded to port 9000.
 
 ```sh
 $ docker build -t grpcweb/envoy \

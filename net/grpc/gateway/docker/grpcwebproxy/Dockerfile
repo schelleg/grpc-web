@@ -39,6 +39,6 @@ ADD ./etc/localhost.crt /etc
 ADD ./etc/localhost.key /etc
 
 ENTRYPOINT [ "/bin/sh", "-c", "exec /go/bin/grpcwebproxy \
-  --backend_addr=node-server:9090 \
+  --backend_addr=node-server:9000 \
   --run_tls_server=false \
   --allow_all_origins " ]

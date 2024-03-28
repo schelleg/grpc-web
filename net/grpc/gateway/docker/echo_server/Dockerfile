@@ -20,5 +20,5 @@ RUN bazel build net/grpc/gateway/examples/echo:server
 
 WORKDIR /github/grpc-web/bazel-bin/net/grpc/gateway/examples/echo
 
-EXPOSE 9090
+EXPOSE 9000
 CMD ["./server"]

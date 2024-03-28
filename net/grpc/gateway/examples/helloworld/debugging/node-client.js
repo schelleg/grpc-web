@@ -16,7 +16,7 @@ var packageDefinition = protoLoader.loadSync(
     });
 var protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 var helloworld = protoDescriptor.helloworld;
-var client = new helloworld.Greeter('localhost:9090',
+var client = new helloworld.Greeter('localhost:9000',
                                     grpc.credentials.createInsecure());
 
 /**

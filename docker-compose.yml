@@ -1,6 +1,8 @@
 version: '3'
+
 services:
   prereqs:
+    platform: linux/arm64/v8
     build:
       context: ./
       dockerfile: ./net/grpc/gateway/docker/prereqs/Dockerfile
@@ -15,6 +17,7 @@ services:
     ports:
       - "9090:9090"
   node-server:
+    platform: linux/arm64/v8
     build:
       context: ./
       dockerfile: ./net/grpc/gateway/docker/node_server/Dockerfile
@@ -31,6 +34,7 @@ services:
     ports:
       - "7074:7074"
   envoy:
+    platform: linux/arm64/v8
     build:
       context: ./
       dockerfile: ./net/grpc/gateway/docker/envoy/Dockerfile
@@ -49,6 +53,7 @@ services:
     links:
       - node-server
   commonjs-client:
+    platform: linux/arm64/v8
     build:
       context: ./
       dockerfile: ./net/grpc/gateway/docker/commonjs_client/Dockerfile
@@ -56,7 +61,7 @@ services:
       - prereqs
     image: grpcweb/commonjs-client
     ports:
-      - "8081:8081"
+      - "192.168.3.1:8081:8081"
   closure-client:
     build:
       context: ./

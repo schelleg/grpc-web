@@ -98,7 +98,7 @@ static_resources:
                 address:
                   socket_address:
                     address: node-server
-                    port_value: 9090
+                    port_value: 9000
 ```
 
 You may also need to add some CORS setup to make sure the browser can request
@@ -106,7 +106,7 @@ cross-origin content.
 
 
 In this simple example, the browser makes gRPC requests to port `:8080`. Envoy
-forwards the request to the backend gRPC server listening on port `:9090`.
+forwards the request to the backend gRPC server listening on port `:9000`.
 
 
 

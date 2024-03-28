@@ -29,7 +29,7 @@ RUN apt-get -qq update && apt-get -qq install -y curl unzip
 WORKDIR /tmp
 
 RUN curl -sSL https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBUF_VERSION/\
-protoc-$PROTOBUF_VERSION-linux-x86_64.zip -o protoc.zip && \
+protoc-$PROTOBUF_VERSION-linux-aarch_64.zip -o protoc.zip && \
   unzip -qq protoc.zip && \
   cp ./bin/protoc /usr/local/bin/protoc
 
@@ -63,12 +63,18 @@ COPY --from=prepare /usr/local/bin/protoc /usr/local/bin/
 COPY --from=prepare /usr/local/bin/buildifier /usr/local/bin/
 COPY --from=prepare /github/grpc-web/third_party /github/grpc-web/third_party
 
-RUN wget -nv -O bazel-installer.sh \
+# RUN wget -nv -O bazel-installer.sh \
+#  https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/\
+# bazel-$BAZEL_VERSION-installer-linux-arm64.sh && \
+#  chmod +x ./bazel-installer.sh && \
+#  ./bazel-installer.sh && \
+#  rm ./bazel-installer.sh
+  
+RUN wget -nv -O /github/grpc-web/bazel \
   https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/\
-bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
-  chmod +x ./bazel-installer.sh && \
-  ./bazel-installer.sh && \
-  rm ./bazel-installer.sh
+bazel-$BAZEL_VERSION-linux-arm64 && \
+  chmod +x /github/grpc-web/bazel 
+  
 
 WORKDIR /github/grpc-web
 
@@ -77,8 +83,12 @@ WORKDIR /github/grpc-web
 COPY ./WORKSPACE ./WORKSPACE
 COPY ./javascript/net/grpc/web/generator javascript/net/grpc/web/generator
 
-RUN bazel build javascript/net/grpc/web/generator:protoc-gen-grpc-web && \
-  cp $(bazel info bazel-genfiles)/javascript/net/grpc/web/generator/protoc-gen-grpc-web \
+# RUN bazel build javascript/net/grpc/web/generator:protoc-gen-grpc-web && \
+#  cp $(bazel info bazel-genfiles)/javascript/net/grpc/web/generator/protoc-gen-grpc-web \
+#  /usr/local/bin/protoc-gen-grpc-web
+
+RUN ./bazel build javascript/net/grpc/web/generator:protoc-gen-grpc-web && \
+  cp $(./bazel info bazel-genfiles)/javascript/net/grpc/web/generator/protoc-gen-grpc-web \
   /usr/local/bin/protoc-gen-grpc-web
 
 COPY ./javascript ./javascript
@@ -94,6 +104,12 @@ COPY ./net ./net
 COPY ./scripts ./scripts
 COPY ./src ./src
 COPY ./test ./test
+
+RUN wget -nv -O buildifier \
+  https://github.com/bazelbuild/buildtools/releases/download/4.0.1/buildifier-linux-arm64 && \
+  chmod +x ./buildifier && \
+  cp ./buildifier /usr/local/bin/buildifier
+
 
 RUN /usr/local/bin/buildifier \
   --mode=check --lint=warn --warnings=all -r ./WORKSPACE javascript net
