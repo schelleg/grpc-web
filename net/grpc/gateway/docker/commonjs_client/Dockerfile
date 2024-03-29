@@ -22,13 +22,15 @@ RUN protoc -I=. echo.proto \
 
 WORKDIR /github/grpc-web/net/grpc/gateway/examples/echo/commonjs-example
 
+RUN npm install /github/grpc-web/packages/grpc-web -g
+
 RUN npm install && \
-  npm link grpc-web && \
-  npx webpack && \
-  cp echotest.html /var/www/html && \
-  cp dist/main.js /var/www/html/dist
+   npx webpack && \
+   cp echotest.html /var/www/html && \
+   cp dist/main.js /var/www/html/dist
 
 WORKDIR /var/www/html
 
 EXPOSE 8081
 CMD ["python", "-m", "SimpleHTTPServer", "8081"]
+

@@ -77,10 +77,10 @@ COPY --from=prepare /github/grpc-web/third_party /github/grpc-web/third_party
 #  ./bazel-installer.sh && \
 #  rm ./bazel-installer.sh
   
-RUN wget -nv -O /github/grpc-web/bazel \
+RUN wget -nv -O /usr/local/bin/bazel \
   https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/\
 bazel-$BAZEL_VERSION-linux-arm64 && \
-  chmod +x /github/grpc-web/bazel 
+  chmod +x usr/local/bin/bazel 
   
 
 WORKDIR /github/grpc-web
@@ -94,8 +94,8 @@ COPY ./javascript/net/grpc/web/generator javascript/net/grpc/web/generator
 #  cp $(bazel info bazel-genfiles)/javascript/net/grpc/web/generator/protoc-gen-grpc-web \
 #  /usr/local/bin/protoc-gen-grpc-web
 
-RUN ./bazel build javascript/net/grpc/web/generator:protoc-gen-grpc-web && \
-  cp $(./bazel info bazel-genfiles)/javascript/net/grpc/web/generator/protoc-gen-grpc-web \
+RUN bazel build javascript/net/grpc/web/generator:protoc-gen-grpc-web && \
+  cp $(bazel info bazel-genfiles)/javascript/net/grpc/web/generator/protoc-gen-grpc-web \
   /usr/local/bin/protoc-gen-grpc-web
 
 COPY ./javascript ./javascript
