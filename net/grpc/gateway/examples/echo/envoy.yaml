@@ -9,7 +9,33 @@ static_resources:
       address:
         socket_address: { address: 0.0.0.0, port_value: 8080 }
       filter_chains:
-        - filters:
+        -
+          # Configures a transport socket protocol like TLS or ALTS.
+          # To specify a specific type, a "typed_config" field with valid "@type" name is required.
+          # https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/core/v3/base.proto#envoy-v3-api-msg-config-core-v3-transportsocket
+          transport_socket:
+            name: envoy.transport_sockets.tls
+            typed_config:
+              # A transport socket listening to downstream connections (clients) using TLS.
+              # https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/tls.proto#envoy-v3-api-msg-extensions-transport-sockets-tls-v3-downstreamtlscontext
+              "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+              # TLS contextual information shared by both the client and server.
+              # https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/tls.proto#envoy-v3-api-msg-extensions-transport-sockets-tls-v3-commontlscontext
+              common_tls_context:
+                # A list of TLS certificates that can be used, clients will only choose a single one per session.
+                # https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/common.proto#envoy-v3-api-msg-extensions-transport-sockets-tls-v3-tlscertificate
+                tls_certificates:
+                  -
+                    # A datasource from which to read the public key certificate, such as a file or
+                    # environment variable.
+                    # https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/core/v3/base.proto#envoy-v3-api-msg-config-core-v3-datasource
+                    certificate_chain:
+                      filename: cert.pem
+                    # A datasource from which to read the private key, such as a file or environment variable.
+                    # https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/core/v3/base.proto#envoy-v3-api-msg-conf
+                    private_key:
+                      filename: key.pem      
+          filters:
           - name: envoy.filters.network.http_connection_manager
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager

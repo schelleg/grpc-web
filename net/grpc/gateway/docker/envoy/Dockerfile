@@ -15,6 +15,10 @@
 FROM envoyproxy/envoy:v1.22.0
 
 COPY net/grpc/gateway/examples/echo/envoy.yaml /etc/envoy/envoy.yaml
+COPY net/grpc/gateway/examples/echo/envoy-orig.yaml /etc/envoy/envoy.yaml-orig
+
+COPY cert.pem .
+COPY key.pem .
 
 ENTRYPOINT [ "/usr/local/bin/envoy" ]
 CMD [ "-c /etc/envoy/envoy.yaml", "-l trace", "--log-path /tmp/envoy_info.log" ]

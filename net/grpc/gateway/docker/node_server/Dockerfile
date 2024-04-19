@@ -15,6 +15,7 @@
 FROM grpcweb/prereqs
 
 WORKDIR /github/grpc-web/net/grpc/gateway/examples/echo/node-server
+COPY net/grpc/gateway/examples/echo/node-server/server.js .
 
 RUN npm install
 

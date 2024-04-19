@@ -53,9 +53,11 @@ function copyMetadata(call) {
  */
 function doEcho(call, callback) {
   callback(null, {
-    message: call.request.message
+    message: 'RFSoC4x2 replying with ' + call.request.message + '.'  
   }, copyMetadata(call));
 }
+
+
 
 /**
  * @param {!Object} call
